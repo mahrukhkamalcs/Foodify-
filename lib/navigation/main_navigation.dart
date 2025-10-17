@@ -5,6 +5,7 @@ import '../features/orders/screens/orders_screen.dart';
 import '../features/profile/screens/profile_screen.dart';
 import 'bottom_nav_bar.dart';
 
+
 class MainNavigation extends StatefulWidget {
   final int initialIndex;
 
@@ -66,3 +67,4 @@ class _MainNavigationState extends State<MainNavigation> {
     );
   }
 }
+
