@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../navigation/main_navigation.dart';
 import '../auth/widgets/custom_text_field.dart';
 
 class CustomerLoginScreen extends StatefulWidget {
@@ -13,16 +14,20 @@ class _CustomerLoginScreenState extends State<CustomerLoginScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
-  void _login() {
-    // Simulated login
-    if (emailController.text.isNotEmpty && passwordController.text.isNotEmpty) {
-      Navigator.pushReplacementNamed(context, '/home'); // Replace later
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Please enter all fields")),
-      );
-    }
+ void _login() {
+  if (emailController.text.isNotEmpty && passwordController.text.isNotEmpty) {
+    // Navigate to main home screen with bottom tabs
+    Navigator.pushReplacementNamed(
+      context, 
+      MainNavigation.routeName, // ✅ Use the static route name
+    );
+  } else {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text("Please enter all fields")),
+    );
   }
+}
+
 
   @override
   Widget build(BuildContext context) {
