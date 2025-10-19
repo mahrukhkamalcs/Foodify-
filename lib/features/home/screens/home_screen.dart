@@ -115,11 +115,33 @@ class _HomeScreenState extends State<HomeScreen> {
                         },
                       ),
                       const SizedBox(height: AppDimensions.paddingSmall),
-                      DailyDealsBanner(
-                        onOrderNow: () {
-                          // Handle order now
-                        },
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: [
+                            DailyDealsBanner(
+                              title: 'Daily Deals',
+                              subtitle: 'Get 50% OFF on your first order!',
+                              onOrderNow: () {
+                                // Handle order now
+                              },
+                            ),
+                            DailyDealsBanner(
+                              title: 'Special Offer',
+                              subtitle: 'Free delivery on all orders today!',
+                              onOrderNow: () {
+                                // Handle order now
+                              },
+                            ),
+                            DailyDealsBanner(
+                              title: 'Combo Deals',
+                              subtitle: 'Buy 1 Get 1 Free on selected items!',
+                              onOrderNow: () {},
+                            ),
+                          ],
+                        ),
                       ),
+
                       const SizedBox(height: AppDimensions.paddingMedium),
                       CategorySection(
                         categories: _categories,

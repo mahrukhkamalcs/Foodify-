@@ -6,6 +6,7 @@ import '../features/auth/customer_login_screen.dart';
 import '../features/auth/signup/customer_signup_screen.dart';
 import '../features/auth/vendor_login_screen.dart';
 import '../features/auth/signup/vendor_signup_screen.dart';
+import '../features/onboarding/splash_screen.dart';
 import '../features/orders/screens/order_tracking_screen.dart';
 import '../features/payment/screens/order_success_screen.dart';
 import 'main_navigation.dart'; // ✅ Fixed import path
@@ -13,6 +14,8 @@ import 'main_navigation.dart'; // ✅ Fixed import path
 class AppRouter {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
+        case SplashScreen.routeName:
+        return MaterialPageRoute(builder: (_) => const SplashScreen());
       case OnboardingScreen.routeName:
         return MaterialPageRoute(builder: (_) => const OnboardingScreen());
 
