@@ -4,6 +4,8 @@ import '../../../core/theme/app_colors.dart';
 import '../../../core/utils/app_dimensions.dart';
 import '../../../data/models/restaurant/restaurant_model.dart';
 import '../../../data/models/restaurant/menu_item_model.dart';
+import '../../../data/models/cart/cart_item_model.dart';
+import '../../cart/screens/cart_screen.dart';
 import '../widgets/restaurant_banner.dart';
 import '../widgets/restaurant_info.dart';
 import '../widgets/menu_category_tabs.dart';
@@ -23,7 +25,9 @@ class RestaurantDetailsScreen extends StatefulWidget {
 class _RestaurantDetailsScreenState extends State<RestaurantDetailsScreen> {
   String _selectedCategory = 'Popular';
   bool _isFavorite = false;
-  int _cartItemCount = 0;
+
+  // Cart items list
+  final List<CartItemModel> _cartItems = [];
 
   final List<String> _categories = [
     'Popular',
@@ -73,6 +77,54 @@ class _RestaurantDetailsScreenState extends State<RestaurantDetailsScreen> {
     return _menuItems
         .where((item) => item.category == _selectedCategory)
         .toList();
+  }
+
+  int get _cartItemCount {
+    return _cartItems.fold(0, (sum, item) => sum + item.quantity);
+  }
+
+  void _addToCart(MenuItemModel menuItem) {
+    setState(() {
+      // Check if item already exists in cart
+      final existingIndex = _cartItems.indexWhere(
+        (cartItem) => cartItem.menuItem.id == menuItem.id,
+      );
+
+      if (existingIndex != -1) {
+        // Item exists, increase quantity
+        _cartItems[existingIndex].quantity++;
+      } else {
+        // New item, add to cart
+        _cartItems.add(CartItemModel(menuItem: menuItem, quantity: 1));
+      }
+    });
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('${menuItem.name} added to cart'),
+        duration: const Duration(seconds: 1),
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: AppColors.success,
+      ),
+    );
+  }
+
+  void _navigateToCart() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder:
+            (context) => CartScreen(
+              initialCartItems: _cartItems,
+              onCartUpdated: (updatedItems) {
+                setState(() {
+                  _cartItems.clear();
+                  _cartItems.addAll(updatedItems);
+                });
+              },
+            ),
+      ),
+    );
   }
 
   @override
@@ -134,18 +186,7 @@ class _RestaurantDetailsScreenState extends State<RestaurantDetailsScreen> {
                           final item = _filteredMenuItems[index];
                           return MenuItemTile(
                             item: item,
-                            onAddToCart: () {
-                              setState(() {
-                                _cartItemCount++;
-                              });
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text('${item.name} added to cart'),
-                                  duration: const Duration(seconds: 1),
-                                  behavior: SnackBarBehavior.floating,
-                                ),
-                              );
-                            },
+                            onAddToCart: () => _addToCart(item),
                           );
                         },
                       ),
@@ -154,20 +195,12 @@ class _RestaurantDetailsScreenState extends State<RestaurantDetailsScreen> {
         ),
       ),
 
-      // ✅ Only show ViewCartBar when cart has items
+      // Only show ViewCartBar when cart has items
       bottomNavigationBar:
           _cartItemCount > 0
               ? ViewCartBar(
                 itemCount: _cartItemCount,
-                onPressed: () {
-                  // Navigate to cart screen
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Navigate to Cart'),
-                      duration: Duration(seconds: 1),
-                    ),
-                  );
-                },
+                onPressed: _navigateToCart,
               )
               : null,
     );
