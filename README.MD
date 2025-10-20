@@ -431,15 +431,23 @@ Images, fonts, and other static files organized by type.
 <img width="205" height="441" alt="Image" src="https://github.com/user-attachments/assets/ca7fabc7-058c-4240-99d7-2cd71cb062f9" />
 <img width="204" height="443" alt="Image" src="https://github.com/user-attachments/assets/565ddd1d-12f1-49d9-b704-9aa8533588a5" />
 
+---
+
 2) Login Screen
 <img width="192" height="341" alt="Image" src="https://github.com/user-attachments/assets/a70eb4ea-95ff-4720-a52e-54b79e21caf6" />
 <img width="202" height="336" alt="Image" src="https://github.com/user-attachments/assets/2fd707b7-d20a-4294-984f-4985e34c1fa7" />
 
+---
+
 3) Signup Screen 
 <img width="205" height="329" alt="Image" src="https://github.com/user-attachments/assets/7bcf25e0-9370-4b9d-864c-481986865b6c" />
 
+---
+
 4) Home Screen/ Program Listing 
 <img width="242" height="430" alt="Image" src="https://github.com/user-attachments/assets/4cf0ff7e-50bf-4580-9cf4-3aa1da2e36f8" />
+
+---
 
 5) Program Details
 <img width="226" height="424" alt="Image" src="https://github.com/user-attachments/assets/80d1a872-ce3c-488d-92e5-dde582eeaa4d" />
@@ -451,9 +459,12 @@ Images, fonts, and other static files organized by type.
 <img width="258" height="413" alt="Image" src="https://github.com/user-attachments/assets/3e0a9754-99fd-42c9-bed5-af86bcd9838f" />
 <img width="253" height="415" alt="Image" src="https://github.com/user-attachments/assets/888a96bb-b042-4bee-bdc9-60642188e440" />
 
+---
+
 6) Profile
 <img width="282" height="441" alt="Image" src="https://github.com/user-attachments/assets/a4957a11-1b53-4665-856a-38e5570377a2" />
 
+---
 
 🚀 Getting Started
 Prerequisites
