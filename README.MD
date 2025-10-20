@@ -424,6 +424,10 @@ Images, fonts, and other static files organized by type.
 
 ---
 
+## 12. Onboarding Screen
+<img width="251" height="453" alt="Image" src="https://github.com/user-attachments/assets/d8d8b297-a13d-4d5f-8ccf-e53d6e6df892" />
+
+
 🚀 Getting Started
 Prerequisites
 Before you begin, ensure you have the following installed:
