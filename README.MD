@@ -424,8 +424,35 @@ Images, fonts, and other static files organized by type.
 
 ---
 
-## 12. Onboarding Screen
+## 12. Screenshots of App Screens
+1) Onboarding Screen
 <img width="251" height="453" alt="Image" src="https://github.com/user-attachments/assets/d8d8b297-a13d-4d5f-8ccf-e53d6e6df892" />
+<img width="206" height="440" alt="Image" src="https://github.com/user-attachments/assets/31cef42a-5f29-4802-aa21-0a9fbd5a307c" />
+<img width="205" height="441" alt="Image" src="https://github.com/user-attachments/assets/ca7fabc7-058c-4240-99d7-2cd71cb062f9" />
+<img width="204" height="443" alt="Image" src="https://github.com/user-attachments/assets/565ddd1d-12f1-49d9-b704-9aa8533588a5" />
+
+2) Login Screen
+<img width="192" height="341" alt="Image" src="https://github.com/user-attachments/assets/a70eb4ea-95ff-4720-a52e-54b79e21caf6" />
+<img width="202" height="336" alt="Image" src="https://github.com/user-attachments/assets/2fd707b7-d20a-4294-984f-4985e34c1fa7" />
+
+3) Signup Screen 
+<img width="205" height="329" alt="Image" src="https://github.com/user-attachments/assets/7bcf25e0-9370-4b9d-864c-481986865b6c" />
+
+4) Home Screen/ Program Listing 
+<img width="242" height="430" alt="Image" src="https://github.com/user-attachments/assets/4cf0ff7e-50bf-4580-9cf4-3aa1da2e36f8" />
+
+5) Program Details
+<img width="226" height="424" alt="Image" src="https://github.com/user-attachments/assets/80d1a872-ce3c-488d-92e5-dde582eeaa4d" />
+<img width="225" height="425" alt="Image" src="https://github.com/user-attachments/assets/accaaa7a-7037-47bf-9c71-e3f909cf622e" />
+<img width="229" height="385" alt="Image" src="https://github.com/user-attachments/assets/524f47f4-eec2-4979-b2cf-f7d3f2b21f74" />
+<img width="224" height="383" alt="Image" src="https://github.com/user-attachments/assets/95ea9405-cffd-4e22-9038-af1a2926eebf" />
+<img width="253" height="402" alt="Image" src="https://github.com/user-attachments/assets/574841d5-93a2-4529-b2d9-e6b5216bcebc" />
+<img width="251" height="401" alt="Image" src="https://github.com/user-attachments/assets/07bf5822-c9ad-4872-90d5-0213a5c199d8" />
+<img width="258" height="413" alt="Image" src="https://github.com/user-attachments/assets/3e0a9754-99fd-42c9-bed5-af86bcd9838f" />
+<img width="253" height="415" alt="Image" src="https://github.com/user-attachments/assets/888a96bb-b042-4bee-bdc9-60642188e440" />
+
+6) Profile
+<img width="282" height="441" alt="Image" src="https://github.com/user-attachments/assets/a4957a11-1b53-4665-856a-38e5570377a2" />
 
 
 🚀 Getting Started
