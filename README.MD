@@ -468,7 +468,8 @@ Images, fonts, and other static files organized by type.
 
 ## 13. 📁 Current Folder Structure - Week 3
 
-📦lib
+---
+   📦lib
  ┣ 📂core                              # Shared app-wide resources
  ┃ ┣ 📂theme
  ┃ ┃ ┣ 📜app_colors.dart               # Primary color palette and constants
@@ -528,6 +529,8 @@ Images, fonts, and other static files organized by type.
  ┃ ┣ 📜bottom_nav_bar.dart             # Persistent navigation bar
  ┃ ┗ 📜app_router.dart                 # Route management
  ┗ 📜main.dart                         # App entry point
+
+---
 
 assets/                              # Asset files (outside lib/)
 ├── data/                            # Local JSON data used for the app
