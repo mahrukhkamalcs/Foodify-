@@ -1,3 +1,4 @@
+
 enum PaymentType {
   card,
   cash,
@@ -31,6 +32,10 @@ class PaymentMethodModel {
         return 'Pay with cash on delivery';
       case PaymentType.wallet:
         return 'Digital wallet';
+      default:
+      return "";
+        break;
     }
+    
   }
 }

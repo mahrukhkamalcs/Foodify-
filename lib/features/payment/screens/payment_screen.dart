@@ -233,7 +233,7 @@ class _PaymentScreenState extends State<PaymentScreen>
           ),
         ),
         Text(
-          '₹${value.toStringAsFixed(2)}',
+          '\$${value.toStringAsFixed(2)}',
           style: AppTextStyles.bodyMedium.copyWith(
             color: AppColors.textPrimary,
             fontWeight: isBold ? FontWeight.w700 : FontWeight.w500,

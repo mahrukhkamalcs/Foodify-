@@ -1,5 +1,7 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_application_1/features/feedback/screens/feedback_form.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_text_styles.dart';
 import '../../../core/utils/app_dimensions.dart';
@@ -15,6 +17,8 @@ import '../widgets/restaurant_card.dart';
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
+  static const routeName = '/home';
+
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
@@ -22,7 +26,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   String _selectedCategory = 'Pizza';
 
-  // Mock Data
+  // Categories (static)
   final List<CategoryModel> _categories = [
     CategoryModel(id: '1', name: 'Pizza', icon: '🍕'),
     CategoryModel(id: '2', name: 'Burgers', icon: '🍔'),
@@ -31,65 +35,50 @@ class _HomeScreenState extends State<HomeScreen> {
     CategoryModel(id: '5', name: 'Drinks', icon: '🥤'),
   ];
 
-  final List<RestaurantModel> _restaurants = [
-    RestaurantModel(
-      id: '1',
-      name: 'The Italian Place',
-      imageUrl:
-          'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400',
-      rating: 4.5,
-      deliveryTime: '20-30min',
-      cuisineType: 'Italian',
-      isFreeDelivery: true,
-      distance: 2.5,
-      deliveryFee: 0.0,
-    ),
-    RestaurantModel(
-      id: '2',
-      name: 'Burger Haven',
-      imageUrl:
-          'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=400',
-      rating: 4.7,
-      deliveryTime: '25-35min',
-      cuisineType: 'American',
-      isFreeDelivery: false,
-      distance: 3.2,
-      deliveryFee: 2.50,
-    ),
-    RestaurantModel(
-      id: '3',
-      name: 'The Spice Merchant',
-      imageUrl:
-          'https://images.unsplash.com/photo-1552566626-52f8b828add9?w=400',
-      rating: 4.5,
-      deliveryTime: '30-45min',
-      cuisineType: 'Asian Fusion',
-      isFreeDelivery: false,
-      distance: 2.5,
-      deliveryFee: 1.50,
-    ),
-  ];
+  // Restaurants (loaded dynamically)
+  List<RestaurantModel> _restaurants = [];
 
-  final List<MenuItemModel> _trendingDishes = [
-    MenuItemModel(
-      id: '1',
-      name: 'Spicy Chicken Wings',
-      imageUrl:
-          'https://images.unsplash.com/photo-1608039829572-78524f79c4c7?w=200',
-      restaurantName: 'From the Wing Spot',
-      rating: 4.8,
-      price: 12.99,
-    ),
-    MenuItemModel(
-      id: '2',
-      name: 'Veg Supreme Pizza',
-      imageUrl:
-          'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=200',
-      restaurantName: 'From Pizza Palace',
-      rating: 4.6,
-      price: 15.99,
-    ),
-  ];
+  // Trending dishes (all menu items)
+  List<MenuItemModel> get allMenuItems => _restaurants.expand((r) => r.menu).toList();
+
+  // Load restaurants from JSON
+  Future<List<RestaurantModel>> _loadRestaurants() async {
+    try {
+      final String response = await rootBundle.loadString('assets/data/restaurants.json');
+      final data = json.decode(response);
+      
+      // Handle JSON root being either list or object with "restaurants" key
+      
+      List<dynamic> restaurantList;
+      if (data is List) {
+        restaurantList = data;
+      } else if (data is Map<String, dynamic> && data['restaurants'] is List) {
+        restaurantList = data['restaurants'];
+      } else {
+        restaurantList = [];
+      }
+
+      final restaurants = restaurantList
+          .map((e) => RestaurantModel.fromJson(e as Map<String, dynamic>))
+          .toList();
+
+      print('✅ Parsed ${restaurants.length} restaurants');
+      return restaurants;
+    } catch (e) {
+      print('❌ Error loading restaurants: $e');
+      return [];
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _loadRestaurants().then((value) {
+      setState(() {
+        _restaurants = value;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -107,14 +96,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       HomeSearchBar(
-                        onTap: () {
-                          // Search will be handled by bottom nav
-                        },
-                        onFilterTap: () {
-                          // Show filter bottom sheet
-                        },
+                        onTap: () {},
+                        onFilterTap: () {},
                       ),
                       const SizedBox(height: AppDimensions.paddingSmall),
+
+                      // Promotional Banners
                       SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         child: Row(
@@ -122,16 +109,12 @@ class _HomeScreenState extends State<HomeScreen> {
                             DailyDealsBanner(
                               title: 'Daily Deals',
                               subtitle: 'Get 50% OFF on your first order!',
-                              onOrderNow: () {
-                                // Handle order now
-                              },
+                              onOrderNow: () {},
                             ),
                             DailyDealsBanner(
                               title: 'Special Offer',
                               subtitle: 'Free delivery on all orders today!',
-                              onOrderNow: () {
-                                // Handle order now
-                              },
+                              onOrderNow: () {},
                             ),
                             DailyDealsBanner(
                               title: 'Combo Deals',
@@ -143,6 +126,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
 
                       const SizedBox(height: AppDimensions.paddingMedium),
+
+                      // Category Section
                       CategorySection(
                         categories: _categories,
                         selectedCategory: _selectedCategory,
@@ -152,25 +137,40 @@ class _HomeScreenState extends State<HomeScreen> {
                           });
                         },
                       ),
+
                       const SizedBox(height: AppDimensions.paddingMedium),
+
                       _buildSectionHeader('Featured Restaurants'),
                       const SizedBox(height: AppDimensions.paddingSmall),
-                      ..._restaurants.map(
-                        (restaurant) => RestaurantCard(
-                          restaurant: restaurant,
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder:
-                                    (context) => RestaurantDetailsScreen(
-                                      restaurant: restaurant,
-                                    ),
+
+                      // Dynamic Restaurant List
+                      _restaurants.isEmpty
+                          ? const Center(
+                              child: Padding(
+                                padding: EdgeInsets.all(40),
+                                child: CircularProgressIndicator(
+                                  color: AppColors.primary,
+                                ),
                               ),
-                            );
-                          },
-                        ),
-                      ),
+                            )
+                          : Column(
+                              children: _restaurants.map(
+                                (restaurant) => RestaurantCard(
+                                  restaurant: restaurant,
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) => RestaurantDetailsScreen(
+                                          restaurant: restaurant,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ).toList(),
+                            ),
+
                       const SizedBox(height: AppDimensions.paddingMedium),
                       _buildSectionHeader('Trending Dishes'),
                       const SizedBox(height: AppDimensions.paddingSmall),
@@ -184,9 +184,19 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ),
+
+      // Floating Feedback Button
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pushNamed(context, FeedbackForm.routeName);
+        },
+        backgroundColor: AppColors.primary,
+        child: const Icon(Icons.feedback),
+      ),
     );
   }
 
+  // Header
   Widget _buildHeader() {
     return Container(
       padding: const EdgeInsets.all(AppDimensions.paddingMedium),
@@ -234,9 +244,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 padding: const EdgeInsets.all(AppDimensions.paddingSmall),
                 decoration: BoxDecoration(
                   color: AppColors.background,
-                  borderRadius: BorderRadius.circular(
-                    AppDimensions.radiusSmall,
-                  ),
+                  borderRadius: BorderRadius.circular(AppDimensions.radiusSmall),
                 ),
                 child: const Icon(
                   Icons.notifications_outlined,
@@ -280,9 +288,9 @@ class _HomeScreenState extends State<HomeScreen> {
         padding: const EdgeInsets.symmetric(
           horizontal: AppDimensions.paddingMedium,
         ),
-        itemCount: _trendingDishes.length,
+        itemCount: allMenuItems.length,
         itemBuilder: (context, index) {
-          final dish = _trendingDishes[index];
+          final dish = allMenuItems[index];
           return _buildTrendingDishCard(dish);
         },
       ),
@@ -352,9 +360,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         backgroundColor: AppColors.primary,
                         foregroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(
-                            AppDimensions.radiusSmall,
-                          ),
+                          borderRadius:
+                              BorderRadius.circular(AppDimensions.radiusSmall),
                         ),
                         elevation: 0,
                         padding: const EdgeInsets.symmetric(

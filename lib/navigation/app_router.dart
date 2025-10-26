@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/data/models/restaurant/restaurant_model.dart';
+import 'package:flutter_application_1/features/feedback/screens/feedback_form.dart';
+import 'package:flutter_application_1/features/restaurant/screens/restaurant_details_screen.dart';
 import '../data/models/cart/cart_item_model.dart';
 import '../features/onboarding/onboarding_screen.dart';
 import '../features/auth/role_selection.dart';
@@ -63,6 +66,11 @@ class AppRouter {
             estimatedDeliveryTime: args['estimatedDeliveryTime'] as String,
           ),
         );
+
+      
+
+      case '/feedback':
+  return MaterialPageRoute(builder: (_) => FeedbackForm());
 
       default:
         return _errorRoute('404 - Page not found');

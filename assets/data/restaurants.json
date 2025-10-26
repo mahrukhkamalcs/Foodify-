@@ -1,0 +1,106 @@
+{
+  "restaurants": [
+    {
+      "id": "1",
+      "name": "Pizza Palace",
+      "cuisine": "Italian",
+      "imageUrl": "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=200",
+      "rating": 4.5,
+      "address": "123 Main Street",
+      "deliveryTime": "45 min",
+      "isFreeDelivery": true,
+      "distance": 2.5,
+      "deliveryFee": 0.0,
+      "menu": [
+        {
+          "id": 1,
+          "name": "Veg Supreme Pizza",
+          "imageUrl": "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=200",
+          "restaurantName": "Pizza Palace",
+          "rating": 4.6,
+          "price": 15.99,
+          "description": "A delicious pizza loaded with fresh vegetables and mozzarella cheese.",
+          "category": "Pizza"
+        },
+        {
+          "id": 2,
+          "name": "Chicken Pepperoni Pizza",
+          "imageUrl": "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=200",
+          "restaurantName": "Pizza Palace",
+          "rating": 4.8,
+          "price": 17.99,
+          "description": "Spicy pepperoni with melted cheese on a crispy crust.",
+          "category": "Pizza"
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "name": "Sushi World",
+      "cuisine": "Japanese",
+      "imageUrl": "https://images.unsplash.com/photo-1553621042-f6e147245754?w=1000",
+      "rating": 4.7,
+      "address": "456 Oak Street",
+      "deliveryTime": "35 min",
+      "isFreeDelivery": false,
+      "distance": 3.2,
+      "deliveryFee": 2.5,
+      "menu": [
+        {
+          "id": 3,
+          "name": "California Roll",
+          "imageUrl": "https://facts.net/wp-content/uploads/2023/07/california-roll-close-up-shot.jpg",
+          "restaurantName": "Sushi World",
+          "rating": 4.7,
+          "price": 12.99,
+          "description": "Classic sushi roll with crab, avocado, and cucumber.",
+          "category": "Sushi"
+        },
+        {
+          "id": 4,
+          "name": "Salmon Nigiri",
+          "imageUrl": "https://images.unsplash.com/photo-1553621042-f6e147245754?w=1000",
+          "restaurantName": "Sushi World",
+          "rating": 4.9,
+          "price": 14.99,
+          "description": "Fresh salmon over seasoned rice, traditional style.",
+          "category": "Sushi"
+        }
+      ]
+    },
+    {
+      "id": "3",
+      "name": "Burger Hub",
+      "cuisine": "American",
+      "imageUrl": "https://images.bolt.eu/store/2022/2022-03-17/7a29ca6b-1dd6-42fb-b605-45fdc9af90f3.jpeg",
+      "rating": 4.3,
+      "address": "564 Grand Street",
+      "deliveryTime": "30 min",
+      "isFreeDelivery": true,
+      "distance": 1.8,
+      "deliveryFee": 0.0,
+      "menu": [
+        {
+          "id": 5,
+          "name": "Classic Cheeseburger",
+          "imageUrl": "https://images.unsplash.com/photo-1551782450-a2132b4ba21d?w=1000",
+          "restaurantName": "Burger Hub",
+          "rating": 4.5,
+          "price": 10.99,
+          "description": "Juicy beef patty with cheddar cheese, lettuce, and tomato.",
+          "category": "Burgers"
+        },
+        {
+          "id": 6,
+          "name": "Veggie Burger",
+          "imageUrl": "https://media-cdn.tripadvisor.com/media/photo-s/26/e3/24/9a/double-bacon-burger.jpg",
+          "restaurantName": "Burger Hub",
+          "rating": 4.2,
+          "price": 9.99,
+          "description": "Delicious plant-based patty with fresh toppings.",
+          "category": "Burgers"
+        }
+      ]
+    }
+  ]
+}
