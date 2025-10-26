@@ -466,6 +466,142 @@ Images, fonts, and other static files organized by type.
 
 ---
 
+## 13. 📁 Current Folder Structure - Week 3
+
+📦lib
+ ┣ 📂core                              # Shared app-wide resources
+ ┃ ┣ 📂theme
+ ┃ ┃ ┣ 📜app_colors.dart               # Primary color palette and constants
+ ┃ ┃ ┣ 📜app_text_styles.dart          # Text themes using Poppins & Inter fonts
+ ┃ ┃ ┗ 📜app_theme.dart                # Centralized MaterialTheme configuration
+ ┃ ┣ 📂utils
+ ┃ ┃ ┣ 📜app_dimensions.dart           # Padding, radius, and spacing constants
+ ┃ ┃ ┗ 📜constants.dart                # Global constant values (strings, etc.)
+ ┃ ┗ 📂widgets
+ ┃   ┗ 📜custom_text_field.dart        # Reusable text input field
+ ┃
+ ┣ 📂data                              # Data layer (local JSON + models)
+ ┃ ┗ 📂models
+ ┃   ┣ 📂cart
+ ┃   ┃ ┗ 📜cart_item_model.dart        # Structure for items in the cart
+ ┃   ┣ 📂checkout
+ ┃   ┃ ┗ 📜address_model.dart          # Address info model
+ ┃   ┣ 📂customer
+ ┃   ┃ ┣ 📜customer_model.dart         # Customer signup structure model
+ ┃   ┃ ┗ 📜customer_login_model.dart   # Customer login credentials model
+ ┃   ┣ 📂order
+ ┃   ┃ ┗ 📜order_model.dart            # Order tracking and details model
+ ┃   ┗ 📂restaurant
+ ┃     ┣ 📜menu_item_model.dart        # Menu item structure
+ ┃     ┗ 📜restaurant_model.dart       # Restaurant info (name, rating, menu)
+ ┃
+ ┣ 📂features                          # Feature modules (UI layer)
+ ┃ ┣ 📂auth
+ ┃ ┃ ┣ 📜login_screen.dart             # Customer login screen (JSON integrated)
+ ┃ ┃ ┗ 📜signup_screen.dart            # Customer signup screen (JSON integrated)
+ ┃ ┣ 📂home
+ ┃ ┃ ┣ 📂screens
+ ┃ ┃ ┃ ┗ 📜home_screen.dart            # Displays restaurants (loaded from JSON)
+ ┃ ┃ ┗ 📂widgets
+ ┃ ┃   ┣ 📜restaurant_card.dart        # Restaurant list card UI
+ ┃ ┃   ┗ 📜category_section.dart       # Category display section
+ ┃ ┣ 📂restaurant
+ ┃ ┃ ┣ 📂screens
+ ┃ ┃ ┃ ┗ 📜restaurant_details_screen.dart # Menu display + Add to Cart logic
+ ┃ ┃ ┗ 📂widgets
+ ┃ ┃   ┗ 📜menu_item_tile.dart         # Individual menu item widget
+ ┃ ┣ 📂checkout
+ ┃ ┃ ┗ 📜checkout_screen.dart          # Checkout process screen
+ ┃ ┣ 📂feedback
+ ┃ ┃ ┗ 📜feedback_form.dart            # Customer feedback form
+ ┃ ┣ 📂orders
+ ┃ ┃ ┗ 📂screens
+ ┃ ┃   ┗ 📜order_tracking_screen.dart  # Displays order progress
+ ┃ ┗ 📂profile
+ ┃   ┣ 📂screens
+ ┃   ┃ ┗ 📜profile_screen.dart         # Profile UI (static for now)
+ ┃   ┗ 📂widgets
+ ┃     ┣ 📜profile_header.dart         # Displays profile info (avatar, name, email)
+ ┃     ┗ 📜profile_menu_item.dart      # Menu item (Orders, Payment, Settings)
+ ┃
+ ┣ 📂navigation
+ ┃ ┣ 📜bottom_nav_bar.dart             # Persistent navigation bar
+ ┃ ┗ 📜app_router.dart                 # Route management
+ ┗ 📜main.dart                         # App entry point
+
+assets/                              # Asset files (outside lib/)
+├── data/                            # Local JSON data used for the app
+│   ├── customer_login.json           # Stores mock login credentials (email & password)
+│   ├── customer_signup.json          # Stores mock user registration data
+│   └── restaurants.json              # Contains restaurant list, menus, categories, and details
+│
+├── images/                           # Image assets
+│   ├── logo/                         # App logos and icons
+│   ├── onboarding/                   # Onboarding screen illustrations
+│   ├── restaurants/                  # Restaurant thumbnails and banners
+│   └── food/                         # Food item images (pizza, burger, etc.)
+│
+└── fonts/                            # Custom font families
+    ├── Poppins/                      # Used for headings and titles
+    └── Inter/                        # Used for body text
+
+---
+
+## 14. 🧩 Key Updates - Week 3
+
+✅ JSON Integration
+
+Added local mock data for:
+1.customer_login.json
+2.customer_signup.json
+3.restaurants.json
+
+Integrated these into login, signup, and restaurant listing screens.
+
+✅ Screens Implemented
+
+1. Login & Signup: Reads credentials directly from JSON for demo authentication.
+2. Home Screen (Program Listing): Dynamically loads restaurant and menu data from restaurants.json.
+3. Restaurant Details (Program Details): Displays food items, allows quantity adjustments, and prepares for checkout.
+
+---
+## 15. 🧾 Feedback Form
+
+The Feedback Form enables users to share their thoughts, report issues, or give suggestions directly within the app.
+This feature helps improve user engagement and overall app quality.
+
+📍 Location in Code:
+lib/features/feedback/screens/feedback_form.dart
+
+🛠️ Key Features:
+
+Accessible via a Floating Action Button (FAB) labeled “Feedback” on the Home Screen.
+Built using Flutter’s Form widget and TextEditingController for input management.
+Uses GlobalKey<FormState> for real-time form validation.
+
+🧩 Fields:
+
+1. Name – Text input; must not be empty.
+2. Email – Validated using a regex pattern to ensure a correct email format (e.g., example@domain.com).
+           If invalid, a message like “Invalid email” is shown.
+3. Message / Feedback – Required field; must not be empty.
+
+✨ User Flow:
+
+User taps the Feedback button (FAB).
+The app navigates to the FeedbackForm screen.
+User fills out details and submits.
+Email is validated (if entered) and message is checked for non-empty input.
+Upon success, a SnackBar confirmation or dialog appears:
+“Feedback submitted successfully!”
+
+🚀 Future Scope:
+
+The form can be easily connected to a backend API or Firebase for storing feedback.
+Optionally, users can receive acknowledgment emails or in-app notifications after submission.
+
+---
+
 🚀 Getting Started
 Prerequisites
 Before you begin, ensure you have the following installed:
