@@ -1,0 +1,19 @@
+{
+    "customers": [
+    {
+        "id": 1,
+        "email": "ayesha.khan@example.com",
+        "password": "password123"
+    },
+    {
+        "id": 2,
+        "email": "john.doe@example.com",
+        "password": "securePass456"
+    },
+    {
+        "id": 3,
+        "email": "sam.white@example.com",
+        "password": "helloWorld789"
+    }
+    ]
+}

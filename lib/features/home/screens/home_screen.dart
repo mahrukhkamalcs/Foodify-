@@ -186,13 +186,17 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
 
       // Floating Feedback Button
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.pushNamed(context, FeedbackForm.routeName);
-        },
-        backgroundColor: AppColors.primary,
-        child: const Icon(Icons.feedback),
-      ),
+      floatingActionButton: FloatingActionButton.extended(
+  onPressed: () {
+    Navigator.pushNamed(context, FeedbackForm.routeName);
+  },
+  backgroundColor: AppColors.primary,
+  icon: const Icon(Icons.feedback),
+  label: const Text(
+    'Feedback',
+    style: TextStyle(fontWeight: FontWeight.w600),
+  ),
+),
     );
   }
 
