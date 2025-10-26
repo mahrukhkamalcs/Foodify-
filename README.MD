@@ -468,7 +468,8 @@ Images, fonts, and other static files organized by type.
 
 ## 13. 📁 Current Folder Structure - Week 3
 
----
+```
+
    📦lib
  ┣ 📂core                              # Shared app-wide resources
  ┃ ┣ 📂theme
@@ -530,8 +531,6 @@ Images, fonts, and other static files organized by type.
  ┃ ┗ 📜app_router.dart                 # Route management
  ┗ 📜main.dart                         # App entry point
 
----
-
 assets/                              # Asset files (outside lib/)
 ├── data/                            # Local JSON data used for the app
 │   ├── customer_login.json           # Stores mock login credentials (email & password)
@@ -548,6 +547,7 @@ assets/                              # Asset files (outside lib/)
     ├── Poppins/                      # Used for headings and titles
     └── Inter/                        # Used for body text
 
+```
 ---
 
 ## 14. 🧩 Key Updates - Week 3
