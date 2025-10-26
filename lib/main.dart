@@ -27,9 +27,9 @@ class FoodifyApp extends StatelessWidget {
       title: 'Foodify',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
-     
+  
       onGenerateRoute: AppRouter.generateRoute, //  Centralized navigation
-       initialRoute: SplashScreen.routeName,
+    initialRoute: SplashScreen.routeName,
     );
   }
 }

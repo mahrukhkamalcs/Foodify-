@@ -17,7 +17,7 @@ class CheckoutScreen extends StatefulWidget {
 
   const CheckoutScreen({
     super.key,
-    required this.cartItems,
+    required this.cartItems, required double total, required double totalPrice,
   });
 
   @override

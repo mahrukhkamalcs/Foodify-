@@ -1,21 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import '../../../core/theme/app_colors.dart';
-import '../../../core/utils/app_dimensions.dart';
-import '../../../data/models/restaurant/restaurant_model.dart';
-import '../../../data/models/restaurant/menu_item_model.dart';
-import '../../../data/models/cart/cart_item_model.dart';
-import '../../cart/screens/cart_screen.dart';
-import '../widgets/restaurant_banner.dart';
-import '../widgets/restaurant_info.dart';
-import '../widgets/menu_category_tabs.dart';
-import '../widgets/menu_item_tile.dart';
-import '../widgets/view_cart_bar.dart';
+import 'package:flutter_application_1/data/models/cart/cart_item_model.dart';
+import 'package:flutter_application_1/data/models/restaurant/menu_item_model.dart';
+import 'package:flutter_application_1/data/models/restaurant/restaurant_model.dart';
+import 'package:flutter_application_1/features/checkout/checkout_screen.dart';
+
 
 class RestaurantDetailsScreen extends StatefulWidget {
   final RestaurantModel restaurant;
 
-  const RestaurantDetailsScreen({super.key, required this.restaurant});
+  const RestaurantDetailsScreen({
+    super.key,
+    required this.restaurant,
+  });
 
   @override
   State<RestaurantDetailsScreen> createState() =>
@@ -23,186 +19,231 @@ class RestaurantDetailsScreen extends StatefulWidget {
 }
 
 class _RestaurantDetailsScreenState extends State<RestaurantDetailsScreen> {
-  String _selectedCategory = 'Popular';
-  bool _isFavorite = false;
+  final Map<int, int> cart = {}; // itemId -> quantity
 
-  // Cart items list
-  final List<CartItemModel> _cartItems = [];
-
-  final List<String> _categories = [
-    'Popular',
-    'Appetizers',
-    'Main Courses',
-    'Desserts',
-    'Drinks',
-  ];
-
-  final List<MenuItemModel> _menuItems = [
-    MenuItemModel(
-      id: '1',
-      name: 'Fiery Wings',
-      imageUrl:
-          'https://images.unsplash.com/photo-1608039829572-78524f79c4c7?w=200',
-      restaurantName: 'The Spice Merchant',
-      rating: 4.5,
-      price: 12.99,
-      description: 'Spicy chicken wings with a tangy dipping sauce',
-      category: 'Popular',
-    ),
-    MenuItemModel(
-      id: '2',
-      name: 'Spring Rolls',
-      imageUrl:
-          'https://images.unsplash.com/photo-1625398407796-82650a8c135f?w=200',
-      restaurantName: 'The Spice Merchant',
-      rating: 4.3,
-      price: 8.99,
-      description: 'Crispy spring rolls filled with vegetables and shrimp',
-      category: 'Popular',
-    ),
-    MenuItemModel(
-      id: '3',
-      name: 'Pork Dumplings',
-      imageUrl:
-          'https://images.unsplash.com/photo-1496116218417-1a781b1c416c?w=200',
-      restaurantName: 'The Spice Merchant',
-      rating: 4.7,
-      price: 10.99,
-      description: 'Savory dumplings with a pork and chive filling',
-      category: 'Popular',
-    ),
-  ];
-
-  List<MenuItemModel> get _filteredMenuItems {
-    return _menuItems
-        .where((item) => item.category == _selectedCategory)
-        .toList();
-  }
-
-  int get _cartItemCount {
-    return _cartItems.fold(0, (sum, item) => sum + item.quantity);
-  }
-
-  void _addToCart(MenuItemModel menuItem) {
-    setState(() {
-      // Check if item already exists in cart
-      final existingIndex = _cartItems.indexWhere(
-        (cartItem) => cartItem.menuItem.id == menuItem.id,
-      );
-
-      if (existingIndex != -1) {
-        // Item exists, increase quantity
-        _cartItems[existingIndex].quantity++;
-      } else {
-        // New item, add to cart
-        _cartItems.add(CartItemModel(menuItem: menuItem, quantity: 1));
-      }
+  double get totalPrice {
+    double sum = 0.0;
+    cart.forEach((key, value) {
+      final item =
+          widget.restaurant.menu.firstWhere((i) => i.id == key, orElse: () => MenuItemModel(
+            id: -1,
+            name: 'Unknown',
+            imageUrl: '',
+            description: '',
+            price: 0.0, restaurantName: '', rating: 0.0, category: '',
+          ));
+      sum += item.price * value;
     });
+    return sum;
+  }
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('${menuItem.name} added to cart'),
-        duration: const Duration(seconds: 1),
-        behavior: SnackBarBehavior.floating,
-        backgroundColor: AppColors.success,
+  // -------------------- SHOW CART DIALOG --------------------
+  void _showCartDialog() {
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: const Text("Checkout"),
+        content: SizedBox(
+          width: double.maxFinite,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ...cart.entries.map((entry) {
+                final item = widget.restaurant.menu
+                    .firstWhere((i) => i.id == entry.key);
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 2),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("${item.name} x ${entry.value}"),
+                      Text(
+                          "\$${(item.price * entry.value).toStringAsFixed(2)}"),
+                    ],
+                  ),
+                );
+              }).toList(),
+              const Divider(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    "Total",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    "\$${totalPrice.toStringAsFixed(2)}",
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text("Close"),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context);
+              setState(() => cart.clear());
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text("Order placed successfully!")),
+              );
+            },
+            child: const Text("Confirm Order"),
+          ),
+        ],
       ),
     );
   }
 
-  void _navigateToCart() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder:
-            (context) => CartScreen(
-              initialCartItems: _cartItems,
-              onCartUpdated: (updatedItems) {
-                setState(() {
-                  _cartItems.clear();
-                  _cartItems.addAll(updatedItems);
-                });
-              },
-            ),
-      ),
+  // -------------------- BUILD MENU SECTION --------------------
+  Widget _buildMenuSection() {
+    final menu = widget.restaurant.menu;
+
+    if (menu.isEmpty) {
+      return const Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Text('No menu items available'),
+      );
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.0),
+          child: Text(
+            'Menu',
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+        ),
+        const SizedBox(height: 8),
+        ListView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: menu.length,
+          itemBuilder: (context, index) {
+            final item = menu[index];
+            final quantity = cart[item.id] ?? 0;
+
+            return ListTile(
+              leading: Image.network(item.imageUrl, width: 50, height: 50),
+              title: Text(item.name),
+              subtitle: Text("\$${item.price.toStringAsFixed(2)}"),
+              trailing: SizedBox(
+                width: 120,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    IconButton(
+                      icon: const Icon(Icons.remove),
+                      onPressed: () {
+                        setState(() {
+                          if (cart[item.id] != null && cart[item.id]! > 0) {
+                            cart[item.id] = cart[item.id]! - 1;
+                            if (cart[item.id] == 0) cart.remove(item.id);
+                          }
+                        });
+                      },
+                    ),
+                    Text(quantity.toString()),
+                    IconButton(
+                      icon: const Icon(Icons.add),
+                      onPressed: () {
+                        setState(() {
+                          cart[item.id] = (cart[item.id] ?? 0) + 1;
+                        });
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        ),
+      ],
     );
   }
 
+  // -------------------- MAIN BUILD --------------------
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
-      body: AnnotatedRegion<SystemUiOverlayStyle>(
-        value: SystemUiOverlayStyle.dark,
+      appBar: AppBar(
+        title: Text(widget.restaurant.name),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.shopping_cart),
+            onPressed: cart.isEmpty ? null : _showCartDialog,
+          ),
+        ],
+      ),
+      body: SingleChildScrollView(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Banner
-            RestaurantBanner(
-              imageUrl: widget.restaurant.imageUrl,
-              isFavorite: _isFavorite,
-              onBackPressed: () => Navigator.pop(context),
-              onFavoritePressed: () {
-                setState(() {
-                  _isFavorite = !_isFavorite;
-                });
-              },
-            ),
+          Image.network(
+  widget.restaurant.imageUrl,
+  width: double.infinity,
+  height: 200,
+  fit: BoxFit.cover,
+  errorBuilder: (context, error, stackTrace) => Container(
+    height: 200,
+    color: Colors.grey[300],
+    child: const Icon(Icons.image_not_supported, size: 50),
+  ),
+),
 
-            // Restaurant Info
-            RestaurantInfo(restaurant: widget.restaurant),
+Padding(
+  padding: const EdgeInsets.all(16.0),
+  child: Text(
+    // 👇 use fallback text instead of accessing a non-existent field
+    'Welcome to ${widget.restaurant.name}! Enjoy the best ${widget.restaurant.cuisine} food in town.',
+    style: const TextStyle(fontSize: 16),
+  ),
+),
 
-            const SizedBox(height: AppDimensions.paddingSmall),
-
-            // Category Tabs
-            MenuCategoryTabs(
-              categories: _categories,
-              selectedCategory: _selectedCategory,
-              onCategorySelected: (category) {
-                setState(() {
-                  _selectedCategory = category;
-                });
-              },
-            ),
-
-            // Menu Items List
-            Expanded(
-              child:
-                  _filteredMenuItems.isEmpty
-                      ? Center(
-                        child: Text(
-                          'No items in this category',
-                          style: TextStyle(
-                            color: AppColors.textSecondary,
-                            fontSize: 16,
-                          ),
-                        ),
-                      )
-                      : ListView.builder(
-                        padding: const EdgeInsets.only(
-                          top: AppDimensions.paddingMedium,
-                          bottom: AppDimensions.paddingXLarge,
-                        ),
-                        itemCount: _filteredMenuItems.length,
-                        itemBuilder: (context, index) {
-                          final item = _filteredMenuItems[index];
-                          return MenuItemTile(
-                            item: item,
-                            onAddToCart: () => _addToCart(item),
-                          );
-                        },
-                      ),
-            ),
+            _buildMenuSection(),
+            const SizedBox(height: 80),
           ],
         ),
       ),
-
-      // Only show ViewCartBar when cart has items
-      bottomNavigationBar:
-          _cartItemCount > 0
-              ? ViewCartBar(
-                itemCount: _cartItemCount,
-                onPressed: _navigateToCart,
-              )
-              : null,
+    bottomNavigationBar: cart.isEmpty
+    ? null
+    : Container(
+        padding: const EdgeInsets.all(16),
+        color: Colors.white,
+        child: SafeArea(
+          child: ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => CheckoutScreen(
+                    cartItems: cart.entries.map((entry) {
+                      final item = widget.restaurant.menu
+                          .firstWhere((i) => i.id == entry.key);
+                      return CartItemModel(
+                        menuItem: item,
+                        quantity: entry.value,
+                      );
+                    }).toList(),
+                    totalPrice: totalPrice, total: 0.0, // ✅ Pass total price
+                  ),
+                ),
+              );
+            },
+            child: Text(
+              'Checkout • \$${totalPrice.toStringAsFixed(2)}',
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
+
