@@ -1,4 +1,7 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show rootBundle;
+import '../../../data/models/customer/customer_login_model.dart';
 import '../../navigation/main_navigation.dart';
 import '../auth/widgets/custom_text_field.dart';
 
@@ -14,20 +17,37 @@ class _CustomerLoginScreenState extends State<CustomerLoginScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
- void _login() {
-  if (emailController.text.isNotEmpty && passwordController.text.isNotEmpty) {
-    // Navigate to main home screen with bottom tabs
-    Navigator.pushReplacementNamed(
-      context, 
-      MainNavigation.routeName, // ✅ Use the static route name
-    );
-  } else {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text("Please enter all fields")),
-    );
-  }
-}
+  List<CustomerLoginModel> customers = [];
 
+  Future<void> loadLoginData() async {
+    final String response =
+        await rootBundle.loadString('assets/data/customer_login.json');
+    final data = json.decode(response);
+    final List list = data['customers'];
+
+    setState(() {
+      customers = list.map((e) => CustomerLoginModel.fromJson(e)).toList();
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    loadLoginData();
+  }
+
+  void _login() {
+    if (emailController.text.isNotEmpty && passwordController.text.isNotEmpty) {
+      Navigator.pushReplacementNamed(
+        context,
+        MainNavigation.routeName,
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Please enter all fields")),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,6 +80,28 @@ class _CustomerLoginScreenState extends State<CustomerLoginScreen> {
                 controller: passwordController,
                 icon: Icons.lock_outline,
               ),
+              const SizedBox(height: 10),
+
+              if (customers.isNotEmpty)
+                DropdownButton<String>(
+                  hint: const Text("Select sample user"),
+                  value: null,
+                  items: customers
+                      .map(
+                        (c) => DropdownMenuItem(
+                          value: c.email,
+                          child: Text(c.email),
+                        ),
+                      )
+                      .toList(),
+                  onChanged: (value) {
+                    final selected =
+                        customers.firstWhere((c) => c.email == value);
+                    emailController.text = selected.email;
+                    passwordController.text = selected.password;
+                  },
+                ),
+
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _login,
@@ -96,7 +138,8 @@ class _CustomerLoginScreenState extends State<CustomerLoginScreen> {
                     style: TextStyle(color: Colors.black54),
                   ),
                   TextButton(
-                    onPressed: () => Navigator.pushNamed(context, '/customer-signup'),
+                    onPressed: () =>
+                        Navigator.pushNamed(context, '/customer-signup'),
                     child: const Text(
                       "Signup",
                       style: TextStyle(
