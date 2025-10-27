@@ -20,11 +20,6 @@ class MenuItemModel {
   });
 
   factory MenuItemModel.fromJson(Map<String, dynamic> json) {
-  //   double parseDouble(dynamic value) {
-  //   if (value is num) return value.toDouble();
-  //   if (value is String) return double.tryParse(value) ?? 0.0;
-  //   return 0.0;
-  // }
     return MenuItemModel(
       id: (json['id'] as num).toInt(),
       name: json['name'] ?? 'No Name',
@@ -36,4 +31,15 @@ class MenuItemModel {
       category: json['category'] ?? 'Popular',
     );
   }
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'name': name,
+        'imageUrl': imageUrl,
+        'restaurantName': restaurantName,
+        'rating': rating,
+        'price': price,
+        'description': description,
+        'category': category,
+      };
 }

@@ -24,4 +24,18 @@ class CartItemModel {
       specialInstructions: specialInstructions ?? this.specialInstructions,
     );
   }
+
+  factory CartItemModel.fromJson(Map<String, dynamic> json) {
+    return CartItemModel(
+      menuItem: MenuItemModel.fromJson(json['menuItem']),
+      quantity: json['quantity'] as int? ?? 1,
+      specialInstructions: json['specialInstructions'] as String?,
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+        'menuItem': menuItem.toJson(),
+        'quantity': quantity,
+        'specialInstructions': specialInstructions,
+      };
 }
