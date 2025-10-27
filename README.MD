@@ -521,7 +521,11 @@ Images, fonts, and other static files organized by type.
  ┃ ┃   ┗ 📜order_tracking_screen.dart  # Displays order progress
  ┃ ┗ 📂profile
  ┃   ┣ 📂screens
- ┃   ┃ ┗ 📜profile_screen.dart         # Profile UI (static for now)
+ ┃   ┃ ┗ 📜my_orders_screen.dart         # Displays orders of profile
+ ┃     ┗ 📜payment_methods_screen.dart   # Displays saved payment methods
+ ┃     ┗ 📜profile_screen.dart           # Profile UI (Dynamic UI)
+ ┃     ┗ 📜saved_addresses_screen.dart   # Displays saved addresses 
+ ┃     ┗ 📜settings_screen.dart          # Displays saved payment methods
  ┃   ┗ 📂widgets
  ┃     ┣ 📜profile_header.dart         # Displays profile info (avatar, name, email)
  ┃     ┗ 📜profile_menu_item.dart      # Menu item (Orders, Payment, Settings)
@@ -564,8 +568,47 @@ Integrated these into login, signup, and restaurant listing screens.
 ✅ Screens Implemented
 
 1. Login & Signup: Reads credentials directly from JSON for demo authentication.
+    Authentication -
+  - Email & Password login
+  - Sample user dropdown for quick testing
+  - Input validation with SnackBars
+  - SharedPreferences session management
+  - Loading spinner during login
 2. Home Screen (Program Listing): Dynamically loads restaurant and menu data from restaurants.json.
 3. Restaurant Details (Program Details): Displays food items, allows quantity adjustments, and prepares for checkout.
+
+
+✅ Dynamic Screens Implemented
+### 1. Profile Screen
+- Displays user details (name, email)
+- Editable display name (saved via SharedPreferences)
+- Quick access to settings
+- View My Orders
+- Logout Button
+
+### 2. Settings Screen
+- **Change Display Name** – update and persist user name
+- **Change Password** – popup dialog for old/new password
+- **Notifications Toggle** – enable/disable notifications and save to SharedPreferences
+- **Logout** – clears session and returns to login
+
+### 3. My Orders Screen
+- Displays user’s past orders from SharedPreferences
+- Shows order details including items, total, order time, and estimated delivery
+- Empty state if no orders found
+- Navigate to order tracking
+
+### 4.Saved Addresses Screen
+- Displays a list of saved delivery addresses for the user
+- Add, edit, and delete addresses
+- Address changes persist locally using SharedPreferences (or can be integrated with API)
+- Quick selection for checkout
+
+### 5. Payment Methods Screen
+- Displays saved payment options (e.g., cards, digital wallets)
+- Add new payment method
+- Edit or delete existing methods
+- Secure storage (can be extended using secure storage packages)
 
 ---
 ## 15. 🧾 Feedback Form
