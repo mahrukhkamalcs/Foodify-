@@ -1,19 +1,48 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
-import '../../../core/services/order_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../data/models/order/order_model.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_text_styles.dart';
 import '../../../core/utils/app_dimensions.dart';
 
-class OrdersScreen extends StatelessWidget {
+class OrdersScreen extends StatefulWidget {
   static const String routeName = '/orders';
 
   const OrdersScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final orders = OrderService().orders;
+  State<OrdersScreen> createState() => _OrdersScreenState();
+}
 
+class _OrdersScreenState extends State<OrdersScreen> {
+  List<Order> orders = [];
+  int userId = -1;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadOrders();
+  }
+
+  Future<void> _loadOrders() async {
+    final prefs = await SharedPreferences.getInstance();
+    userId = prefs.getInt('userId') ?? -1;
+    if (userId == -1) return;
+
+    final savedOrders = prefs.getStringList('orders_$userId') ?? [];
+    final loadedOrders = savedOrders.map((orderJson) {
+      final data = jsonDecode(orderJson);
+      return Order.fromJson(data);
+    }).toList();
+
+    setState(() {
+      orders = loadedOrders;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
@@ -98,9 +127,8 @@ class OrdersScreen extends StatelessWidget {
           ),
           const SizedBox(height: 12),
 
-          // ✅ Display order items with images
+          // Display order items
           if (order.items.isNotEmpty) ...[
-            // Show first 3 items with images
             Wrap(
               spacing: 8,
               runSpacing: 8,
@@ -147,8 +175,6 @@ class OrdersScreen extends StatelessWidget {
               }).toList(),
             ),
             const SizedBox(height: 12),
-
-            // Item count text
             Text(
               '${order.items.length} item${order.items.length > 1 ? 's' : ''}',
               style: TextStyle(

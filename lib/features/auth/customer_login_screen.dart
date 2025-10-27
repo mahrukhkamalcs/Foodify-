@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../data/models/customer/customer_login_model.dart';
 import '../../navigation/main_navigation.dart';
 import '../auth/widgets/custom_text_field.dart';
@@ -18,6 +19,7 @@ class _CustomerLoginScreenState extends State<CustomerLoginScreen> {
   final TextEditingController passwordController = TextEditingController();
 
   List<CustomerLoginModel> customers = [];
+  bool _isLoading = false;
 
   Future<void> loadLoginData() async {
     final String response =
@@ -36,15 +38,58 @@ class _CustomerLoginScreenState extends State<CustomerLoginScreen> {
     loadLoginData();
   }
 
-  void _login() {
-    if (emailController.text.isNotEmpty && passwordController.text.isNotEmpty) {
-      Navigator.pushReplacementNamed(
-        context,
-        MainNavigation.routeName,
-      );
-    } else {
+  bool _isValidEmail(String email) {
+    final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w]{2,4}$');
+    return emailRegex.hasMatch(email);
+  }
+
+  Future<void> _saveSession(CustomerLoginModel user) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('userId', user.id);
+    await prefs.setString('userEmail', user.email);
+  }
+
+  void _login() async {
+    final email = emailController.text.trim();
+    final password = passwordController.text.trim();
+
+    if (email.isEmpty || password.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Please enter all fields")),
+      );
+      return;
+    }
+
+    if (!_isValidEmail(email)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Please enter a valid email")),
+      );
+      return;
+    }
+
+    setState(() {
+      _isLoading = true;
+    });
+
+    // Simulate network delay
+    await Future.delayed(const Duration(seconds: 1));
+
+    // Check credentials against sample users
+    final user = customers.firstWhere(
+      (c) => c.email == email && c.password == password,
+      orElse: () => CustomerLoginModel(id: -1, email: '', password: ''),
+    );
+
+    setState(() {
+      _isLoading = false;
+    });
+
+    if (user.id != -1) {
+      await _saveSession(user);
+      Navigator.pushReplacementNamed(context, MainNavigation.routeName);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Invalid email or password")),
       );
     }
   }
@@ -103,24 +148,26 @@ class _CustomerLoginScreenState extends State<CustomerLoginScreen> {
                 ),
 
               const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: _login,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.orange,
-                  minimumSize: const Size(double.infinity, 50),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                child: const Text(
-                  "Login",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                  ),
-                ),
-              ),
+              _isLoading
+                  ? const CircularProgressIndicator()
+                  : ElevatedButton(
+                      onPressed: _login,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.orange,
+                        minimumSize: const Size(double.infinity, 50),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      child: const Text(
+                        "Login",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
+                      ),
+                    ),
               const SizedBox(height: 20),
               TextButton(
                 onPressed: () => Navigator.pushNamed(context, '/vendor-login'),
