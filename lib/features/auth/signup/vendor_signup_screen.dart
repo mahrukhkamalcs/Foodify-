@@ -1,6 +1,8 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import '../widgets/custom_text_field.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/services.dart' show rootBundle;
 
 class VendorSignupScreen extends StatefulWidget {
   static const routeName = '/vendor-signup';
@@ -15,19 +17,57 @@ class _VendorSignupScreenState extends State<VendorSignupScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
-  void _signup() async {
-    if (emailController.text.isNotEmpty && passwordController.text.isNotEmpty) {
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setString('userRole', 'vendor');
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Vendor account created successfully!")),
-      );
-      Navigator.pushReplacementNamed(context, '/vendor-login');
-    } else {
+  List<Map<String, dynamic>> vendors = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadVendors();
+  }
+
+  Future<void> _loadVendors() async {
+    try {
+      final String response =
+          await rootBundle.loadString('assets/data/vendor_signup.json');
+      final data = json.decode(response);
+      final List list = data['vendors'];
+      setState(() {
+        vendors = List<Map<String, dynamic>>.from(list);
+      });
+    } catch (e) {
+      debugPrint('Error loading vendor JSON: $e');
+    }
+  }
+
+  Future<void> _signup() async {
+    if (restaurantNameController.text.isEmpty ||
+        emailController.text.isEmpty ||
+        passwordController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Please fill all fields")),
       );
+      return;
     }
+
+    // Save vendor info locally
+    final prefs = await SharedPreferences.getInstance();
+    List<String> storedVendors = prefs.getStringList('vendor_accounts') ?? [];
+
+    final newVendor = json.encode({
+      'restaurantName': restaurantNameController.text,
+      'email': emailController.text,
+      'password': passwordController.text,
+    });
+
+    storedVendors.add(newVendor);
+    await prefs.setStringList('vendor_accounts', storedVendors);
+    await prefs.setString('userRole', 'vendor');
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text("Vendor account created successfully!")),
+    );
+
+    Navigator.pushReplacementNamed(context, '/vendor-login');
   }
 
   @override
@@ -61,6 +101,32 @@ class _VendorSignupScreenState extends State<VendorSignupScreen> {
                 icon: Icons.lock_outline,
                 obscureText: true,
               ),
+              const SizedBox(height: 10),
+
+              // ✅ Dropdown for sample vendors
+              if (vendors.isNotEmpty)
+                DropdownButton<String>(
+                  value: null,
+                  hint: const Text("Select sample vendor"),
+                  items: vendors.map<DropdownMenuItem<String>>((v) {
+                    final restaurantName = v['restaurantName']?.toString() ?? '';
+                    final email = v['email']?.toString() ?? '';
+                    return DropdownMenuItem<String>(
+                      value: email,
+                      child: Text(restaurantName),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    if (value == null) return;
+                    final selected = vendors.firstWhere(
+                      (v) => v['email'] == value,
+                    );
+                    restaurantNameController.text = selected['restaurantName'] ?? '';
+                    emailController.text = selected['email'] ?? '';
+                    passwordController.text = selected['password'] ?? '';
+                  },
+                ),
+
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _signup,

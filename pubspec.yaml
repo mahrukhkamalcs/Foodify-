@@ -70,7 +70,9 @@ flutter:
     - assets/data/restaurants.json
     - assets/data/customer_login.json
     - assets/data/customer_signup.json
-
+    - assets/data/vendor_login.json
+    - assets/data/vendor_signup.json
+    
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
 

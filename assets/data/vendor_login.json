@@ -1,0 +1,7 @@
+{
+    "vendors": [
+{ "id": 1,"email": "pizzapalace@vendor.com","password": "pizza123" },
+{ "id": 2, "email": "burgerhub@vendor.com","password": "burger123"},
+{ "id": 3, "email": "tastybites@gmail.com", "password": "tasty123" }
+    ]
+}

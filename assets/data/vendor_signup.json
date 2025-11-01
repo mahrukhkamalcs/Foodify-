@@ -1,0 +1,28 @@
+{
+    "vendors": [
+    {
+        "id": 1,
+        "restaurantName": "Sushi World",
+        "email": "sushiworld@vendor.com",
+        "password": "sushi123"
+    },
+    {
+        "id": 2,
+        "restaurantName": "Taco Town",
+        "email": "tacotown@vendor.com",
+        "password": "taco123"
+    },
+    {
+        "id": 3,
+        "restaurantName": "Sweet Treats",
+        "email": "sweettreats@vendor.com",
+        "password": "sweet123"
+    },
+    {
+        "id": 4,
+        "restaurantName": "Noodle House",
+        "email": "noodlehouse@vendor.com",
+        "password": "noodle123"
+    }
+    ]
+}

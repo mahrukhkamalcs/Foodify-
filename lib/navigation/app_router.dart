@@ -17,11 +17,17 @@ import '../features/profile/screens/my_orders_screen.dart';
 import '../features/profile/screens/saved_addresses_screen.dart';
 import '../features/profile/screens/payment_methods_screen.dart';
 import '../features/profile/screens/settings_screen.dart';
+import '../features/vendor/screens/vendor_dashboard_screen.dart';
+import '../features/vendor/screens/add_menu_item_screen.dart';
+import '../features/vendor/screens/view_menu_screen.dart';
 import 'main_navigation.dart'; // ✅ Fixed import path
 
 class AppRouter {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
+      // -------------------------
+      // 🔹 Onboarding & Auth Flow
+      // -------------------------
       case SplashScreen.routeName:
         return MaterialPageRoute(builder: (_) => const SplashScreen());
 
@@ -43,10 +49,15 @@ class AppRouter {
       case VendorSignupScreen.routeName:
         return MaterialPageRoute(builder: (_) => const VendorSignupScreen());
 
+      // -------------------------
+      // 🔹 Main App Navigation
+      // -------------------------
       case MainNavigation.routeName:
         return MaterialPageRoute(builder: (_) => const MainNavigation());
 
-      // Profile routes
+      // -------------------------
+      // 🔹 Customer Profile Section
+      // -------------------------
       case '/profile':
         return MaterialPageRoute(builder: (_) => const ProfileScreen());
 
@@ -62,6 +73,29 @@ class AppRouter {
       case '/settings':
         return MaterialPageRoute(builder: (_) => const SettingsScreen());
 
+      // -------------------------
+      // 🔹 Vendor Section
+      // -------------------------
+      case VendorDashboardScreen.routeName:
+        return MaterialPageRoute(
+            builder: (_) => const VendorDashboardScreen());
+
+      case AddMenuItemScreen.routeName:
+  final args = settings.arguments as Map<String, dynamic>?;
+  if (args == null || args['restaurant'] == null) {
+    return _errorRoute('Restaurant data is required for adding menu item');
+  }
+  final RestaurantModel restaurant = args['restaurant'] as RestaurantModel;
+  return MaterialPageRoute(
+    builder: (_) => AddMenuItemScreen(restaurant: restaurant),
+  );
+
+      case ViewMenuScreen.routeName:
+        return MaterialPageRoute(builder: (_) => const ViewMenuScreen());
+
+      // -------------------------
+      // 🔹 Order & Payment
+      // -------------------------
       case OrderSuccessScreen.routeName:
         final args = settings.arguments as Map<String, dynamic>?;
         if (args == null) return _errorRoute('Missing order data');
@@ -85,9 +119,15 @@ class AppRouter {
           ),
         );
 
+      // -------------------------
+      // 🔹 Feedback
+      // -------------------------
       case '/feedback':
         return MaterialPageRoute(builder: (_) => FeedbackForm());
 
+      // -------------------------
+      // 🔹 Default Error Route
+      // -------------------------
       default:
         return _errorRoute('404 - Page not found');
     }
