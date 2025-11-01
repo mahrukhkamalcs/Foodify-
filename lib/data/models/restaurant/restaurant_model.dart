@@ -11,7 +11,7 @@ class RestaurantModel {
   final bool isFreeDelivery;
   final double distance;
   final double deliveryFee;
-  final List<MenuItemModel> menu; // new
+  final List<MenuItemModel> menu;
 
   RestaurantModel({
     required this.id,
@@ -41,8 +41,22 @@ class RestaurantModel {
       deliveryFee: (json['deliveryFee'] != null) ? (json['deliveryFee'] as num).toDouble() : 0.0,
       menu: (json['menu'] as List<dynamic>?)
               ?.map((item) => MenuItemModel.fromJson(item))
-              .toList() ??
-          [], 
+              .toList() ?? [],
     );
   }
+
+  // ✅ Add this method
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'name': name,
+        'cuisine': cuisine,
+        'imageUrl': imageUrl,
+        'rating': rating,
+        'address': address,
+        'deliveryTime': deliveryTime,
+        'isFreeDelivery': isFreeDelivery,
+        'distance': distance,
+        'deliveryFee': deliveryFee,
+        'menu': menu.map((e) => e.toJson()).toList(),
+      };
 }

@@ -6,11 +6,13 @@ import '../../../core/utils/app_dimensions.dart';
 class HomeSearchBar extends StatelessWidget {
   final VoidCallback onTap;
   final VoidCallback onFilterTap;
+  final TextEditingController controller;
 
   const HomeSearchBar({
     super.key,
     required this.onTap,
     required this.onFilterTap,
+    required this.controller,
   });
 
   @override
@@ -23,41 +25,29 @@ class HomeSearchBar extends StatelessWidget {
       child: Row(
         children: [
           Expanded(
-            child: GestureDetector(
+            child: TextField(
+              controller: controller,
               onTap: onTap,
-              child: Container(
-                padding: const EdgeInsets.symmetric(
+              decoration: InputDecoration(
+                hintText: 'Search for restaurants or dishes',
+                hintStyle: AppTextStyles.bodyMedium.copyWith(
+                  color: AppColors.textHint,
+                ),
+                prefixIcon: Icon(
+                  Icons.search,
+                  color: AppColors.textSecondary,
+                  size: AppDimensions.iconMedium,
+                ),
+                filled: true,
+                fillColor: Colors.white,
+                contentPadding: const EdgeInsets.symmetric(
                   horizontal: AppDimensions.paddingMedium,
                   vertical: AppDimensions.paddingMedium,
                 ),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(
-                    AppDimensions.radiusMedium,
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.05),
-                      blurRadius: 10,
-                      offset: const Offset(0, 2),
-                    ),
-                  ],
-                ),
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.search,
-                      color: AppColors.textSecondary,
-                      size: AppDimensions.iconMedium,
-                    ),
-                    const SizedBox(width: AppDimensions.paddingSmall),
-                    Text(
-                      'Search for restaurants or dishes',
-                      style: AppTextStyles.bodyMedium.copyWith(
-                        color: AppColors.textHint,
-                      ),
-                    ),
-                  ],
+                border: OutlineInputBorder(
+                  borderRadius:
+                      BorderRadius.circular(AppDimensions.radiusMedium),
+                  borderSide: BorderSide.none,
                 ),
               ),
             ),

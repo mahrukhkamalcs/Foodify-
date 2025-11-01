@@ -151,7 +151,7 @@ class OrderSuccessScreen extends StatelessWidget {
                                   ),
                                   // Item price
                                   Text(
-                                    '\${item.totalPrice.toStringAsFixed(2)}',
+                                    '${item.totalPrice.toStringAsFixed(2)}',
                                     style: AppTextStyles.bodyMedium.copyWith(
                                       fontWeight: FontWeight.bold,
                                       color: AppColors.primary,
