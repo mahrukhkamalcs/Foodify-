@@ -641,6 +641,134 @@ Email is validated (if entered) and message is checked for non-empty input.
 Upon success, a SnackBar confirmation or dialog appears:
 “Feedback submitted successfully!”
 
+---
+## 16. 📁 Current Folder Structure - Week 4
+
+```
+📦 flutter_application_1
+ ┣ 📂android                     # Android platform-specific code and configurations
+ ┣ 📂ios                         # iOS platform-specific code and configurations
+ ┣ 📂lib                         # Main application source code
+ ┃ ┣ 📂core                      # Reusable global styles, colors, and utilities
+ ┃ ┃ ┣ 📜app_colors.dart         # Defines color palette used throughout the app
+ ┃ ┃ ┣ 📜app_text_styles.dart    # Defines all text styles for consistent typography
+ ┃ ┃ ┗ 📜app_dimensions.dart     # Defines spacing, padding, and size constants
+ ┃ ┣ 📂data                      # Data and model definitions
+ ┃ ┃ ┣ 📜customer_login_model.dart     # Model for customer login data (email, password)
+ ┃ ┃ ┣ 📜customer_signup_model.dart    # Model for customer signup data (name, email, password)
+ ┃ ┃ ┣ 📜vendor_login_model.dart       # Model for vendor login data (email, password)
+ ┃ ┃ ┣ 📜vendor_signup_model.dart      # Model for vendor signup data (restaurant name, email, password)
+ ┃ ┃ ┗ 📜menu_item_model.dart          # Model representing food/menu item details
+ ┃ ┣ 📂features                 # Feature-specific modules organized by functionality
+ ┃ ┃ ┣ 📂auth                   # Authentication module for both customer and vendor
+ ┃ ┃ ┃ ┣ 📜customer_login_screen.dart  # Customer login page
+ ┃ ┃ ┃ ┣ 📜customer_signup_screen.dart # Customer signup page
+ ┃ ┃ ┃ ┣ 📜vendor_login_screen.dart    # Vendor login page
+ ┃ ┃ ┃ ┗ 📜vendor_signup_screen.dart   # Vendor signup page
+ ┃ ┃ ┣ 📂customer               # Customer-side app features
+ ┃ ┃ ┃ ┣ 📜customer_dashboard_screen.dart  # Displays restaurant list and offers
+ ┃ ┃ ┃ ┗ 📜customer_profile_screen.dart    # Customer profile and settings
+ ┃ ┃ ┃ ┗ 📂profile
+ ┃ ┃ ┃ ┃ ┣ 📂screens
+ ┃ ┃ ┃ ┃ ┣ 📜profile_screen.dart            # Profile overview: avatar, name, email, quick stats
+ ┃ ┃ ┃ ┃ ┣ 📜my_orders_screen.dart          # List of user's past/current orders
+ ┃ ┃ ┃ ┃ ┣ 📜payment_methods_screen.dart    # Manage saved cards and payment methods
+ ┃ ┃ ┃ ┃ ┣ 📜saved_addresses_screen.dart    # CRUD for delivery addresses
+ ┃ ┃ ┃ ┃ ┗ 📜settings_screen.dart           # Account settings, notifications, language, logout
+ ┃ ┃ ┃ ┗ 📂widgets
+ ┃ ┃ ┃ ┃ ┣ 📜profile_header.dart            # Displays avatar, display name, email (used in profile_screen)
+ ┃ ┃ ┃ ┃ ┗ 📜profile_menu_item.dart         # Reusable menu row used in settings & profile screens
+ ┃ ┃ ┣ 📂vendor                             # Vendor-side app features
+ ┃ ┃ ┃ ┣ 📂screens
+ ┃ ┃ ┃ ┃ ┣ 📜vendor_dashboard_screen.dart   # Vendor home – manage menu, view stats, etc.
+ ┃ ┃ ┃ ┃ ┣ 📜add_menu_item_screen.dart      # Add a new food item (dish name, category, price)
+ ┃ ┃ ┃ ┃ ┣ 📜add_restaurant_screen.dart     # Register a restaurant (name, cuisine, location)
+ ┃ ┃ ┃ ┃ ┗ 📜view_menu_screen.dart          # Display all vendor’s menu items
+ ┃ ┃ ┃ ┣ 📂services
+ ┃ ┃ ┃ ┃ ┗ 📜vendor_data_service.dart       # Handles vendor data storage, retrieval, and local JSON sync
+ ┃ ┃ ┣ 📂feedback                           # Feedback collection and management
+ ┃ ┃ ┃ ┣ 📜feedback_form.dart               # Feedback submission form screen
+ ┃ ┃ ┃ ┗ 📜feedback_service.dart            # Logic to save or send feedback data
+ ┃ ┣ 📂navigation
+ ┃ ┃ ┣ 📜app_router.dart                    # Central route configuration file for all screens
+ ┃ ┃ ┗ 📜route_names.dart                   # Constants for route names used across app navigation
+ ┃ ┣ 📂theme
+ ┃ ┃ ┗ 📜theme_config.dart                  # Global theme settings (light/dark mode, colors, fonts)
+ ┃ ┣ 📂widgets
+ ┃ ┃ ┗ 📜common_button.dart                 # Shared button widget with consistent design
+ ┃ ┣ 📜main.dart                            # Entry point of the Flutter app (sets up routes and themes)
+ 
+assets/
+├── data/                                # Local JSON data used for app simulation
+│   ├── customer_login.json              # Mock login credentials for customers
+│   ├── customer_signup.json             # Sample customer registration data
+│   ├── vendors_login.json               # NEW – Sample vendor accounts (email, restaurant name) - for login
+│   ├── vendors_signup.json              # NEW – Sample vendor accounts (email, restaurant name) - for signup
+│   └── restaurants.json                 # Restaurant list, menus, categories, and ratings
+│
+├── images/
+│   ├── logo/                            # App logos and icons
+│   ├── onboarding/                      # Onboarding screen illustrations
+│   ├── restaurants/                     # Restaurant thumbnails and banners
+│   └── food/                            # Food and drink item images (pizza, noodles, desserts, etc.)
+│
+└── fonts/
+    ├── Poppins/                         # Font for titles and headings
+    └── Inter/                           # Font for paragraph and body text
+
+```
+---
+## 17. 🆕 Recent Additions and Key Updates
+
+🧭 Role Selection Screen
+
+Added role_selection.dart to let users choose between Customer or Vendor mode.
+
+🧑‍🍳 Vendor Authentication Flow
+
+vendor_signup_screen.dart – Vendor can sign up using restaurant name, email, and password.
+
+vendor_login_screen.dart – Vendor login integrated with vendors.json and SharedPreferences.
+
+📋 Vendor Dashboard Module
+
+vendor_dashboard_screen.dart – Central hub for vendor management.
+
+add_menu_item_screen.dart – Vendors can add new dishes to their restaurant.
+
+view_menu_screen.dart – Vendors can view all their added menu items.
+
+🗂️ Data Model & JSON Integration
+
+Added vendors.json for storing mock vendor data.
+
+Each vendor linked with restaurantName, email, and password.
+
+🧠 Smart Routing
+
+app_router.dart updated with:
+
+Vendor login and signup screens
+
+Vendor dashboard
+
+Add and view menu routes
+
+Error handling using _errorRoute() for missing arguments
+
+💾 SharedPreferences Integration
+
+Stores login sessions and role (userRole = customer/vendor).
+
+Simulated account creation and persistence locally.
+
+🎨 UI Consistency & Error Handling
+
+Improved snackbar alerts for signup/login validation.
+
+Enhanced dropdown selection (for vendors and customers).
+---
+
 🚀 Future Scope:
 
 The form can be easily connected to a backend API or Firebase for storing feedback.
