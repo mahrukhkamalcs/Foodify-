@@ -772,7 +772,7 @@ Improved snackbar alerts for signup/login validation.
 
 Enhanced dropdown selection (for vendors and customers).
 ---
-## 18.🛠️ Setup Instructions
+## 18. 🛠️ Setup Instructions
 
  🔧 Prerequisites
 - Flutter SDK (≥ 3.22)
@@ -794,8 +794,8 @@ flutter pub get
 # 4️⃣ Run the app
 flutter run
 (Make sure your emulator or physical device is connected before running.)
+```
 ---
-
 ## 19. Screenshots of App Screens
 
 1) Onboarding Screen
@@ -848,6 +848,8 @@ e) Feedback Screen
 <img width="273" height="351" alt="Image" src="https://github.com/user-attachments/assets/0cfc44d3-199c-46fb-a560-71aa2dea59d1" />
 <img width="255" height="327" alt="Image" src="https://github.com/user-attachments/assets/073a360d-48bd-46a0-b26f-7cbe08e899ab" />
 ---
+
+
 
 🚀 Future Scope:
 
