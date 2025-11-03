@@ -774,12 +774,12 @@ Enhanced dropdown selection (for vendors and customers).
 ---
 ## 18.🛠️ Setup Instructions
 
-### 🔧 Prerequisites
+ 🔧 Prerequisites
 - Flutter SDK (≥ 3.22)
 - Android Studio / VS Code
 - Device or Emulator (Android/iOS)
 
-### ▶️ Run Locally
+▶️ Run Locally
 
 ```bash
 # 1️⃣ Clone the repository
