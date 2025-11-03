@@ -799,10 +799,11 @@ flutter run
 ## 19. Screenshots of App Screens
 
 1) Onboarding Screen
-<img width="251" height="453" alt="Image" src="https://github.com/user-attachments/assets/d8d8b297-a13d-4d5f-8ccf-e53d6e6df892" />
-<img width="206" height="440" alt="Image" src="https://github.com/user-attachments/assets/31cef42a-5f29-4802-aa21-0a9fbd5a307c" />
-<img width="205" height="441" alt="Image" src="https://github.com/user-attachments/assets/ca7fabc7-058c-4240-99d7-2cd71cb062f9" />
-<img width="204" height="443" alt="Image" src="https://github.com/user-attachments/assets/565ddd1d-12f1-49d9-b704-9aa8533588a5" />
+<img width="285" height="453" alt="Image" src="https://github.com/user-attachments/assets/d8d8b297-a13d-4d5f-8ccf-e53d6e6df892" />
+<img width="285" height="440" alt="Image" src="https://github.com/user-attachments/assets/31cef42a-5f29-4802-aa21-0a9fbd5a307c" />
+<img width="285" height="441" alt="Image" src="https://github.com/user-attachments/assets/ca7fabc7-058c-4240-99d7-2cd71cb062f9" />
+<img width="285" height="443" alt="Image" src="https://github.com/user-attachments/assets/565ddd1d-12f1-49d9-b704-9aa8533588a5" />
+---
 
 2) Vendor Dashboard
 <img width="285" height="366" alt="Image" src="https://github.com/user-attachments/assets/b9b86313-7bf8-46e4-8994-dabd2c8687b9" />
@@ -815,6 +816,7 @@ flutter run
 <img width="285" height="374" alt="Image" src="https://github.com/user-attachments/assets/de3090c8-0d3b-4713-8fb1-493cfc2884c5" />
 <img width="285" height="364" alt="Image" src="https://github.com/user-attachments/assets/c37dadce-e5f4-4f9c-80c4-a0ad765c2e11" />
 <img width="285" height="359" alt="Image" src="https://github.com/user-attachments/assets/5476b305-f46f-4b55-8951-2379a8011611" />
+---
 
 3) Customer Dashboard
 a) Login
